@@ -90,7 +90,7 @@ int main()
 	center_j = img.cols / 2;
 
 	// doing CV
-	vector<string> v_name = { "upside_down.bmp", "rightside_left.bmp", "diag_mirrored.bmp" , "shrinked.bmp", "binarized.bmp" };
+	vector<string> v_name = { "upside_down.png", "rightside_left.png", "diag_mirrored.png" , "shrinked.png", "binarized.png" };
 	for (int i = 0; i < 5; i++)
 	{
 		img = original.clone();
