@@ -23,6 +23,7 @@ void dfs(int i, int j, int& label, int& row, int& col)
 	else
 	{
 		img.at<uchar>(i, j) = label;
+		// printf("i %d j %d become %d \n", i, j, img.at<uchar>(i, j));
 		if (i > 0) dfs(i - 1, j, label, row, col);
 		if (i < row - 1) dfs(i + 1, j, label, row, col);
 		if (j > 0) dfs(i, j - 1, label, row, col);
@@ -41,7 +42,9 @@ int main()
 		for (int j = 0; j < col; j++)
 		{
 			img.at<uchar>(i, j) = (img.at<uchar>(i, j) > 0x7f ? 1 : 0);
+			// printf("%d", img.at<uchar>(i, j));
 		}
+		// printf("\n");
 	}
 
 	int label = 2;
@@ -49,11 +52,11 @@ int main()
 	{
 		for (int j = 0; j < col; j++)
 		{
+			printf("i %d j %d \n", i, j);
 			if (img.at<uchar>(i, j) == 1)
 			{
-				printf("i %d j %d \n", i, j);
 				dfs(i, j, label, row, col);
-				label += 10;
+				label += 1;
 			}
 		}
 	}
