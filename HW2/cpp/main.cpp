@@ -71,7 +71,6 @@ int main()
 		}
 	}
 
-	system("pause");
 	// show image
 	imshow("connected_components", img);
 
@@ -88,5 +87,6 @@ int main()
 			printf("%d --> %d \n", idx++, x);
 		}
 	}
+	getchar();
 	return 0;
 }
