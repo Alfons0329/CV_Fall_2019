@@ -53,7 +53,8 @@ cc_img = (img_binarized == 0xff) * 1
 def union_find(label):
     original_label = label
     cnt = 0
-    while label != parent_label[label] and cnt < 262144:
+    row, col = cc_img.shape
+    while label != parent_label[label] and cnt < row * col:
         label = parent_label[parent_label[label]]
         cnt += 1
 
@@ -75,11 +76,6 @@ def connected_components():
 
     # do connected components
     label = 2
-    for i in range(row):
-        print()
-        for j in range(col):
-            print(cc_img[i, j], end = '')
-
     for i in range(row):
         for j in range(col):
             ok1 = 0
@@ -123,17 +119,10 @@ def connected_components():
 
     # union and find merging
     for i in range(row):
-        print()
         for j in range(col):
             if cc_img[i, j] > 1:
-                print('%d par--> %d,' %(cc_img[i, j], union_find(cc_img[i, j])), end = '')
+                #print('%d par--> %d,' %(cc_img[i, j], union_find(cc_img[i, j])), end = '')
                 cc_img[i, j] = union_find(cc_img[i, j])
-
-
-    for i in range(row):
-        print()
-        for j in range(col):
-            print('%3d'%(cc_img[i, j]), end = '')
 
     mymap = []
     for i in range(0, row * col):
