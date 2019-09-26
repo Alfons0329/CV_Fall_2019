@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[14]:
 
 
 #!/usr/bin/env python
@@ -155,8 +155,9 @@ def connected_components():
         l = min(cc_pos[each_cc_value], key = lambda i : i [1])[1]
         r = max(cc_pos[each_cc_value], key = lambda i : i [1])[1]
         
-        cen_i = (u + d) // 2
-        cen_j = (l + r) // 2
+        cen_i, cen_j = [sum(i) / len(i) for i in zip(*cc_pos[each_cc_value])]
+        cen_i = int(cen_i)
+        cen_j = int(cen_j)
         
         print('%6d %6d %6d %6d %6d %6d' %(u, d, l, r, cen_i, cen_j))
         
