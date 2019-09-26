@@ -34,14 +34,20 @@ void rightside_left()
 		{
 			swap(img.at<uchar>(i, j), img.at<uchar>(i, m - j - 1));
 		}
-		cout << endl;
 	}
 }
 
 void diag_mirrored()
 {
-	upside_down();
-	rightside_left();
+	// upside_down();
+	// rightside_left();
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j <= i; j++)
+		{
+			img.at<uchar>(i, j) = img.at<uchar>(j, i);
+		}
+	}
 }
 
 void shrink()
