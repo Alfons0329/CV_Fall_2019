@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+
+# In[11]:
+
+
+#!/usr/bin/env python
+# coding: utf-8
 # NTU CSIE, Computer Vision HW2, R08922024, Alfons Hwu
 
 import cv2
@@ -15,7 +21,6 @@ kernel = [[-2, -1], [-2, 0], [-2, 1],
 [0, -2],  [0, -1], [0, 0], [0, 1], [0, 2],
 [1, -2],  [1, -1], [1, 0], [1, 1], [1, 2],
           [2, -1], [2, 0], [2, 1]]
-
 ####### binarize ######
 def img_binarize(img_in):
     return (img_in > 0x7f) * 0xff
@@ -27,23 +32,22 @@ plt.show()
 
 ####### dilation #####
 def dilation(a, b):
-    ra, ca = a.shape
+    ra, ca = a.shape # original image
     res = np.zeros(a.shape, dtype = 'int32')
-
+    
     for ai in range(ra):
         for aj in range(ca):
             if a[ai, aj] == 0xff:
-
+                
                 # assign original image position
                 res[ai, aj] = 0xff
                 for b_each in b:
                     bi, bj = b_each
-                    if  ai + bi >= 0 and ai + bi < ra \
-                    and aj + bj >= 0 and aj + bj < ca:
+                    if  ai + bi >= 0 and ai + bi < ra                     and aj + bj >= 0 and aj + bj < ca: 
                         # extend the value
-                        res[ai + bi, aj + bj] = 0xff
-
-    return res
+                        res[ai + bi, aj + bj] = 0xff 
+                        
+    return res 
 
 img_dilated = dilation(img_bin, kernel)
 print('lena dilation')
@@ -56,24 +60,47 @@ plt.show()
 def erosion(a, b):
     ra, ca = a.shape # original image
     res = np.zeros(a.shape, dtype = 'int32')
-
+    
     for ai in range(ra):
         for aj in range(ca):
-            if a[ai, aj] > 0:
-
-                ok = 1
+            if a[ai, aj] == 0xff:
+                
+                # assign original image position erode the pixel or not
+                res[ai, aj] = 0xff 
+                ok = 1 
                 for b_each in b:
                     bi, bj = b_each
-                    if ai + bi >= ra or aj + bj >= ca \
-                    or ai + bi <  0  or aj + bj <  0  \
-                    or a[ai + bi, aj + bj] == 0:
+                    if ai + bi >= ra or aj + bj >= ca                     or ai + bi <  0  or aj + bj <  0                     or a[ai + bi, aj + bj] != 0xff:
                         ok = 0
                         break
+                        
+                if ok == 0:
+                    # erode the pixel
+                    res[ai, aj] = 0
+    
+    return res 
 
-                if ok == 1:
-                    res[ai, aj] = 255
+####### erosion case2 ##
+def erosion_2(a, b):
+    ra, ca = a.shape # original image
+    res = np.zeros(a.shape, dtype = 'int32')
+    
+    for ai in range(ra):
+        for aj in range(ca):
+            # assign original image position erode the pixel or not
+            res[ai, aj] = 0xff 
+            ok = 1 
+            for b_each in b:
+                bi, bj = b_each
+                if ai + bi >= ra or aj + bj >= ca                 or ai + bi <  0  or aj + bj <  0                 or a[ai + bi, aj + bj] != 0xff:
+                    ok = 0
+                    break
 
-    return res
+            if ok == 0:
+                # erode the pixel
+                res[ai, aj] = 0
+
+    return res 
 
 img_eroded = erosion(img_bin, kernel)
 print('lena erosion')
@@ -106,20 +133,20 @@ plt.show()
 
 ##### hit & miss ######
 def hit_and_miss(a, j, k):
-    a_c = (-a) + 255
-    a_j = erosion(a, j)
-    a_k = erosion(a_c, k)
-    res = (a_j + a_k) / 2
-
-    # intersect with add up and div 2 to see whether still 255
-    return (res == 255) * 255
+    return (((erosion(a, j) + erosion_2((-a + 0xff), k)) // 2) == 0xff) * 0xff
 
 kernel_j = [[0, -1], [0, 0], [1, 0]]
 kernel_k = [[-1, 0], [-1, 1], [0, 1]]
 img_hm = hit_and_miss(img_bin, kernel_j, kernel_k)
-r, c = img_hm.shape
 print('lena hit and miss')
 plt.imshow(img_hm, cmap = 'gray')
 plt.savefig('lena_hm', cmap = 'gray', dpi = 150)
 cv2.imwrite('lena_hm_cv.png', img_hm)
 plt.show()
+
+
+# In[ ]:
+
+
+
+
