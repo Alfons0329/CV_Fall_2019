@@ -72,13 +72,16 @@ def yokoi_core(img_in):
                         x8, x4, x5 = 0, 0, 0
                 else:
                     if j == 0:
+                    # leftmost-row
                         x7, x2, x6 = 0, img_down[i - 1, j], img_down[i - 1, j + 1]
                         x3, x0, x1 = 0, img_down[i, j], img_down[i, j + 1]
                         x8, x4, x5 = 0, img_down[i + 1, j], img_down[i + 1, j + 1]
+                    # rightmost-column
                     elif j == col - 1:
                         x7, x2, x6 = img_down[i - 1, j - 1], img_down[i - 1, j], 0
                         x3, x0, x1 = img_down[i, j - 1], img_down[i, j], 0
                         x8, x4, x5 = img_down[i + 1, j - 1], img_down[i + 1, j], 0
+                    #the rest, inner
                     else:
                         x7, x2, x6 = img_down[i - 1, j - 1], img_down[i - 1, j], img_down[i - 1, j + 1]
                         x3, x0, x1 = img_down[i, j - 1], img_down[i, j], img_down[i, j + 1]
