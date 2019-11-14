@@ -2,14 +2,7 @@
 # coding: utf-8
 # NTU CSIE, Computer Vision HW7 utils, R08922024, Alfons Hwu
 
-import cv2
-import math, sys
-import matplotlib.pyplot as plt
 import numpy as np
-
-####### IO ############
-img = cv2.imread('lena.bmp', cv2.IMREAD_GRAYSCALE)
-
 ####### binarize ######
 def img_binarize(img_in):
     return (img_in > 0x7f) * 0xff
@@ -99,7 +92,7 @@ def do_yokoi(img_in):
                 
     return res
 
-####### ib core #######
+####### ib core ######
 def do_ib(img_in):
 
     def h(c, d):
@@ -107,9 +100,10 @@ def do_ib(img_in):
         if c == d:
             return c         
         # border content
-        else
+        else:
             return 'b'
 
+    # BG: 0, interior: 1, border: 2
     res = np.zeros(img_in.shape, np.int)
     for i in range(row):
         for j in range(col):
@@ -159,4 +153,58 @@ def do_ib(img_in):
                 else:
                     res[i, j] = 1
     
+    return res
+
+###### mp core ######
+def do_mp(img_in):
+    def h(a, dm):
+        # interior content
+        if a == m:
+            return 1         
+        # border content
+        else:
+            return 0
+
+    # BG: 0, p: 1, q: 2
+    res = np.zeros(img_in.shape, np.int)
+    for i in range(row):
+        for j in range(col):
+            if img_down[i, j] > 0:
+                x1, x2, x3, x4 = 0, 0, 0, 0
+                if i == 0:
+                    # top-left
+                    if j == 0:
+                        x1, x4 = img_in[i, j + 1], img_in[i + 1, j]
+                    # top-right
+                    elif j == col - 1:
+                        x3, x4 = img_in[i, j - 1], img_in[i + 1, j]
+                    # top-row
+                    else:
+                        x1, x3, x4 = img_in[i, j + 1], img_in[i, j - 1], img_in[i + 1, j]
+                elif i == row - 1:
+                    # bottom-left
+                    if j == 0:
+                        x1, x2 = img_in[i, j + 1], img_in[i - 1, j]
+                    # bottom-right
+                    elif j == col - 1:
+                        x2, x3 = img_in[i - 1, j], img_in[i, j - 1]
+                    # bottom-row
+                    else:
+                        x1, x2, x3 = img_in[i, j + 1], img_in[i - 1, j], img_in[i, j - 1]
+                else:
+                    # leftmost-row
+                    if j == 0:
+                        x1, x2, x4 = img_in[i, j + 1], img_in[i - 1, j], img_in[i + 1, j]
+                    # rightmost-colmn
+                    elif j == col - 1:
+                        x2, x3, x4 = img_in[i - 1, j], img_in[i, j - 1], img_in[i + 1, j]
+                    # the rest, inner
+                    else:
+                        x1, x2, x3, x4 = img_in[i, j + 1], img_in[i - 1, j], img_in[i, j - 1], img_in[i + 1, j]
+
+                if h(x1, 1) + h(x2, 1) + h(x3, 1) + h(x4, 1) >= 1 and img_in[i, j] == 2:
+                    res[i, j] = 1
+                else:
+                    res[i, j] = 2
+         
     return res
