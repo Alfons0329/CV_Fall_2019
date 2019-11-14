@@ -26,8 +26,6 @@ def h(b, c, d, e):
 
 ####### yokoi core ####
 def yokoi_core(img_in):
-    row, col = img_in.shape
-
     # down sampling image
     img_down = np.zeros((64, 64), np.int)
     row, col = img_down.shape
@@ -54,7 +52,7 @@ def yokoi_core(img_in):
                         x7, x2, x6 = 0, 0, 0
                         x3, x0, x1 = img_down[i, j - 1], img_down[i, j], img_down[i, j + 1]
                         x8, x4, x5 = img_down[i + 1, j - 1], img_down[i + 1, j], img_down[i + 1, j + 1]
-                elif i == img_down.shape[0] - 1:
+                elif i == row - 1:
                     if j == 0:
                     # bottom-left
                         x7, x2, x6 = 0, img_down[i - 1, j], img_down[i - 1, j + 1]
