@@ -8,9 +8,7 @@ def img_binarize(img_in):
     return (img_in > 0x7f) * 0xff
 
 ####### yokoi core ####
-def do_yokoi(img_in):
-    row, col = img_in.shape
-
+def do_yokoi(img_down):
     # yokoi h op
     def h(b, c, d, e):
         if b == c and (d != b or e != b):
@@ -21,7 +19,8 @@ def do_yokoi(img_in):
         return 's'
 
     # main part of yokoi connectivity
-    res = np.zeros(img_in.shape, np.int)
+    res = np.zeros(img_down.shape, np.int)
+    row, col = img_down.shape
     for i in range(row):
         for j in range(col):
             if img_down[i, j] > 0:
@@ -94,7 +93,6 @@ def do_yokoi(img_in):
 
 ####### ib core ######
 def do_ib(img_in):
-
     def h(c, d):
         # interior content
         if c == d:
@@ -105,9 +103,10 @@ def do_ib(img_in):
 
     # BG: 0, interior: 1, border: 2
     res = np.zeros(img_in.shape, np.int)
+    row, col = img_in.shape
     for i in range(row):
         for j in range(col):
-            if img_down[i, j] > 0:
+            if img_in[i, j] > 0:
                 x1, x2, x3, x4 = 0, 0, 0, 0
                 if i == 0:
                     # top-left
@@ -157,7 +156,7 @@ def do_ib(img_in):
 
 ###### mp core ######
 def do_mp(img_in):
-    def h(a, dm):
+    def h(a, m):
         # interior content
         if a == m:
             return 1         
@@ -166,10 +165,12 @@ def do_mp(img_in):
             return 0
 
     # BG: 0, p: 1, q: 2
+    
     res = np.zeros(img_in.shape, np.int)
+    row, col = img_in.shape
     for i in range(row):
         for j in range(col):
-            if img_down[i, j] > 0:
+            if img_in[i, j] > 0:
                 x1, x2, x3, x4 = 0, 0, 0, 0
                 if i == 0:
                     # top-left
@@ -201,7 +202,8 @@ def do_mp(img_in):
                     # the rest, inner
                     else:
                         x1, x2, x3, x4 = img_in[i, j + 1], img_in[i - 1, j], img_in[i, j - 1], img_in[i + 1, j]
-
+                
+                # problem check
                 if h(x1, 1) + h(x2, 1) + h(x3, 1) + h(x4, 1) >= 1 and img_in[i, j] == 2:
                     res[i, j] = 1
                 else:
