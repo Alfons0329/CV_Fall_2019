@@ -18,7 +18,7 @@ k = np.array([
             [0, 1, 0]
         ])
 ```
-![](https://i.imgur.com/RkURkDH.png)
+![](https://i.imgur.com/QtnCuXP.png)
 
 
 ## Laplace Mask2 (1, 1, 1, 1, -8, 1, 1, 1, 1): 15
@@ -30,7 +30,8 @@ k = np.array([
             [1, 1, 1]
         ])
 ```
-![](https://i.imgur.com/CJBU2TJ.png)
+![](https://i.imgur.com/s7C1Yja.png)
+
 
 
 ## Minimum variance Laplacian: 20
@@ -42,7 +43,7 @@ k = np.array([
             [2, -1, 2]
         ]) / 3
 ```
-![](https://i.imgur.com/Z1aCqvU.png)
+![](https://i.imgur.com/sJQrwfU.png)
 
 
 ## Laplace of Gaussian: 3000
@@ -62,7 +63,7 @@ k = np.array([
             [0, 0, 0, -1, -1, -2, -1, -1, 0, 0, 0]
         ])
 ```
-![](https://i.imgur.com/aX14F3I.png)
+![](https://i.imgur.com/yWMmflO.png)
 
 
 ## Difference of Gaussian: 1
@@ -82,4 +83,4 @@ k = np.array([
             [-1, -3, -4, -6, -7, -8, -7, -6, -4, -3, -1],
         ])
 ```
-![](https://i.imgur.com/43beJr9.png)
+![](https://i.imgur.com/eJzwlsF.png)
